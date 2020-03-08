@@ -30,7 +30,7 @@ class Chatroom:
             self.new_client(client_socket, address)
 
     def new_client(self, client_socket, address):
-        client_socket.send(bytes("Welcome to the club", "utf-8"))
+        client_socket.send(bytes(f'Welcome to {self.name}', "utf-8"))
 
         while True:
             message = client_socket.recv(2048)
