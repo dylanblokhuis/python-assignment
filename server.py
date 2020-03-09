@@ -17,9 +17,9 @@ else:
     # since there are no chatrooms we need to create one
     with open(chatrooms_pkl_path, 'wb') as output:
         # we define port as 0 to get a random open one
-        chatroom = Chatroom('First chatroom', 23528)
+        chatroom = Chatroom('First chatroom')
         chatrooms.append(chatroom)
-        chatroom1 = Chatroom('Second chatroom', 39284)
+        chatroom1 = Chatroom('Second chatroom')
         chatrooms.append(chatroom1)
         pickle.dump(chatrooms, output, pickle.HIGHEST_PROTOCOL)
 
@@ -28,7 +28,7 @@ def start_main_server():
     # main server for a client to fetch available chatrooms
     main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
     main_server.bind(('127.0.0.1', 1234))
-    main_server.listen(5)
+    main_server.listen()
     print("Starting main server on port 1234")
 
     while True:

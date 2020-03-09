@@ -1,10 +1,10 @@
 class User:
-    name: str
-    socket: object
-    address: str
-    messages: list
+    name: str = ""
+    client_socket = None
+    address: str = ""
+    messages: list = []
 
-    def __init__(self, name, socket, address):
+    def __init__(self, name, client_socket, address):
         self.name = name
-        self.socket = socket
+        self.client_socket = client_socket
         self.address = address

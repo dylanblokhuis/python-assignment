@@ -6,12 +6,12 @@ user_name = input("Whats your username? \n> ")
 
 
 def get_chatrooms():
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    server.connect(('127.0.0.1', 1234))
+    main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+    main_server.connect(('127.0.0.1', 1234))
     while True:
-        msg = server.recv(4096)
+        main_server_msg = main_server.recv(4096)
         try:
-            return pickle.loads(msg)
+            return pickle.loads(main_server_msg)
         except EOFError:
             pass
 
@@ -24,18 +24,23 @@ for chatroom in chatrooms:
     if chatroom.name == answer:
         selected_chatroom = chatroom
 
-
 print(f'Joining: {selected_chatroom.name}')
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-server.connect(('127.0.0.1', selected_chatroom.port))
+server.connect(('0.0.0.0', selected_chatroom.port))
+server.send(user_name.encode("utf-8"))
 payload = ""
 
 while True:
-    msg = server.recv(1024)
+    msg = server.recv(2048)
     print(msg.decode("utf-8"))
 
     while True:
-        payload = input("> ")
+
+        try:
+            payload = input(f'{user_name}> ')
+        except KeyboardInterrupt:
+            server.close()
+            break
 
         if payload == 'quit':
             server.close()
