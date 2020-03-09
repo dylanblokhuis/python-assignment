@@ -31,7 +31,7 @@ class Chatroom:
         self.port = server.getsockname()[1]
 
         print(f'Started chatroom server: \"{self.name}\" on port {self.port}')
-
+        # TODO: each chatroom is now a thread, but each connection is not a thread
         while True:
             client_socket, address = server.accept()
             self.new_client(client_socket, address)
