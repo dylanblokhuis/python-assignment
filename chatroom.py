@@ -31,10 +31,12 @@ class Chatroom:
         self.port = server.getsockname()[1]
 
         print(f'Started chatroom server: \"{self.name}\" on port {self.port}')
-        # TODO: each chatroom is now a thread, but each connection is not a thread
         while True:
             client_socket, address = server.accept()
-            self.new_client(client_socket, address)
+            # create another thread for each client
+            thread = Thread(target=self.new_client, args=(client_socket, address))
+            thread.daemon = True
+            thread.start()
 
     def new_client(self, client_socket, address):
         client_socket.send(f'Welcome to {self.name}\n'.encode("utf-8"))
