@@ -46,7 +46,7 @@ for chatroom in chatrooms:
 
 while True:
     try:
-        time.sleep(.1)
+        time.sleep(3)
     except KeyboardInterrupt:
         print("Shutting down...")
         exit(0)

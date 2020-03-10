@@ -3,6 +3,8 @@ from threading import Thread
 from user import User
 from typing import List
 
+BUFFER = 4096
+
 
 class Chatroom:
     name: str
@@ -21,7 +23,11 @@ class Chatroom:
 
     def broadcast(self, message, _from):
         for user in self.users:
-            user.client_socket.send(f'[{_from}]: {message}'.encode("utf-8"))
+            try:
+                user.client_socket.send(f'[{_from}]: {message}'.encode("utf-8"))
+            except:
+                user.client_socket.close()
+                self.users.remove(user)
 
     def new_socket(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
@@ -39,23 +45,24 @@ class Chatroom:
             thread.start()
 
     def new_client(self, client_socket, address):
+        print(f'Connection established with {address}')
         client_socket.send(f'Welcome to {self.name}\n'.encode("utf-8"))
-        user_name = client_socket.recv(2048).decode("utf-8")
+        user_name = client_socket.recv(BUFFER).decode("utf-8")
         user = User(user_name, client_socket, address)
-
         self.users.append(user)
         self.broadcast(f'{user.name} joined the chat!', 'SERVER')
 
         while True:
-            message = user.client_socket.recv(2048)
             try:
+                message = user.client_socket.recv(BUFFER)
+
                 if message:
                     print(message.decode("utf-8"))
                     self.broadcast(message.decode("utf-8"), user.name)
-                else:
-                    self.users.remove(user)
-                    user.client_socket.close()
-                    print("Closing client connection")
-                    break
+
             except:
-                continue
+                self.users.remove(user)
+                user.client_socket.close()
+                print("Closing client connection")
+                break
+        user.client_socket.close()

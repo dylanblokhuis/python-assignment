@@ -1,6 +1,9 @@
+import socket
+
+
 class User:
     name: str = ""
-    client_socket = None
+    client_socket: socket.socket
     address: str = ""
     messages: list = []
 
