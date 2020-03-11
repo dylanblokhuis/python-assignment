@@ -26,14 +26,16 @@ def get_chatrooms():
 def prompt(server):
     while True:
         try:
-            payload = input(f'{user_name}> ')
+            payload = input()
             if payload:
                 if payload == 'quit':
                     server.close()
+                    exit(0)
                     break
                 server.send(payload.encode("utf-8"))
         except KeyboardInterrupt:
             server.close()
+            exit(0)
             break
 
 
@@ -42,10 +44,6 @@ def receive_messages(server):
         try:
             msg = server.recv(BUFFER)
             print(msg.decode("utf-8"))
-
-            thread = Thread(target=prompt, args=[server])
-            thread.daemon = True
-            thread.start()
         except:
             continue
 
@@ -54,12 +52,13 @@ def join_chatroom(chatroom):
     print(f'Joining: {chatroom.name}')
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
     server.connect(('0.0.0.0', chatroom.port))
-    server.setblocking(False)
     server.send(user_name.encode("utf-8"))
 
     thread = Thread(target=receive_messages, args=[server])
     thread.daemon = True
     thread.start()
+
+    prompt(server)
 
 
 chatrooms = get_chatrooms()
