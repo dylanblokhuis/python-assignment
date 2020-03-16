@@ -1,6 +1,6 @@
 import socket
 import pickle
-import utils
+from question_prompter import QuestionPrompter
 import time
 from threading import Thread
 
@@ -71,8 +71,9 @@ if __name__ == '__main__':
     client = Client(user_name)
 
     chatrooms = fetch_chatrooms()
-    chosen_chatroom = utils.prompt("Which chatroom would you like to join?",
-                                   list(map(lambda question: question.name, chatrooms)))
+    chosen_chatroom = QuestionPrompter(
+        list(map(lambda question: question.name, chatrooms))
+    ).prompt("Which chatroom would you like to join?")
 
     for chatroom in chatrooms:
         if chatroom.name == chosen_chatroom:
