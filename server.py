@@ -27,7 +27,7 @@ else:
 def start_main_server():
     # main server for a client to fetch available chatrooms
     main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    main_server.bind(('127.0.0.1', 1234))
+    main_server.bind(('0.0.0.0', 1234))
     main_server.listen()
     print("Starting main server on port 1234")
 
