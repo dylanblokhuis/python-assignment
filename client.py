@@ -33,13 +33,13 @@ class Client:
         server.connect(('0.0.0.0', port))
         server.send(self.get_user_name().encode("utf-8"))
 
-        thread = Thread(target=self.receive, args=[server])
+        thread = Thread(target=self.__receive, args=[server])
         thread.daemon = True
         thread.start()
 
-        self.prompt(server)
+        self.__prompt(server)
 
-    def receive(self, server):
+    def __receive(self, server):
         while True:
             try:
                 msg = server.recv(BUFFER)
@@ -47,7 +47,7 @@ class Client:
             except:
                 continue
 
-    def prompt(self, server):
+    def __prompt(self, server):
         while True:
             try:
                 payload = input()

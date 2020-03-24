@@ -24,9 +24,9 @@ class QuestionPrompter:
         split = ''.join(formatted_questions)
 
         blue_colored_message = colored_prompt(Colors.BLUE, message)
-        return self.prompt_until_right_answer(f'\n{blue_colored_message}\n{split}> ')
+        return self.__prompt_until_right_answer(f'\n{blue_colored_message}\n{split}> ')
 
-    def prompt_until_right_answer(self, answer):
+    def __prompt_until_right_answer(self, answer):
         questions = self.get_questions()
 
         while True:
