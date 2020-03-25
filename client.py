@@ -72,12 +72,12 @@ if __name__ == '__main__':
 
     chatrooms = fetch_chatrooms()
     chosen_chatroom = QuestionPrompter(
-        list(map(lambda question: question.name, chatrooms))
+        list(map(lambda question: question['name'], chatrooms))
     ).prompt("Which chatroom would you like to join?")
 
     for chatroom in chatrooms:
-        if chatroom.name == chosen_chatroom:
-            client.connect(chatroom.port)
+        if chatroom['name'] == chosen_chatroom:
+            client.connect(chatroom['port'])
 
     while True:
         try:

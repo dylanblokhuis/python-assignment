@@ -40,9 +40,20 @@ class Server:
 
         while True:
             client_socket, address = main_server.accept()
-            print(self.get_chatrooms())
-            client_socket.send(bytes(pickle.dumps(self.get_chatrooms())))
-            client_socket.close()
+            # create another thread for each client
+            self.__new_main_server_client(client_socket, address)
+
+    def __new_main_server_client(self, client_socket, address):
+        def no_socket_in_pickle(item):
+            return {
+                "name": item.name,
+                "port": item.port
+            }
+
+        _chatrooms = list(map(no_socket_in_pickle, self.get_chatrooms()))
+
+        client_socket.send(bytes(pickle.dumps(_chatrooms)))
+        client_socket.close()
 
     def get_chatrooms(self):
         return self.chatrooms
