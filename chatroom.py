@@ -53,9 +53,14 @@ class Chatroom:
 
     def __new_client(self, client_socket, address):
         print(f'Connection established with {address}')
-        client_socket.send(f'Welcome to {self.get_name()}\n'.encode("utf-8"))
+
         user_name = client_socket.recv(BUFFER).decode("utf-8")
         user = User(user_name, client_socket, address)
+
+        user.get_client_socket().send(f'Welcome to the server, {user.get_name()}\nYou can leave the server by using the !quit command'.encode("utf-8"))
+        for command in self.get_commands():
+            if command.name == "commands":
+                user.get_client_socket().send(bytes(command.invoke(), 'utf-8'))
 
         users = self.get_users()
         users.append(user)
@@ -92,14 +97,22 @@ class Chatroom:
 
     def default_commands(self):
         users_command = Command("users", self.format_users)
+        commands_command = Command("commands", self.format_commands)
+
         commands = self.get_commands()
         commands.append(users_command)
+        commands.append(commands_command)
         self.set_commands(commands)
 
     def format_users(self):
         user_names = map(lambda user: f'{user.get_address()} - {user.name} \n', self.get_users())
 
         return utils.ascii_title("List of users") + ''.join(user_names)
+
+    def format_commands(self):
+        commands = map(lambda command: f'!{command.name} \n', self.get_commands())
+
+        return utils.ascii_title("Available commands") + ''.join(commands)
 
     def get_name(self):
         return self.name

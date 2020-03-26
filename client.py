@@ -26,9 +26,7 @@ class Client:
     def __init__(self, name):
         self.user_name = name
 
-    def connect(self, port: int):
-        print(f'Joining server on {port}')
-
+    def __connect(self, port: int):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
         server.connect(('0.0.0.0', port))
         server.send(self.get_user_name().encode("utf-8"))
@@ -52,15 +50,25 @@ class Client:
             try:
                 payload = input()
                 if payload:
-                    if payload == 'quit':
+                    if payload == '!quit':
                         server.close()
-                        exit(0)
+                        self.choose_chatroom()
                         break
                     server.send(payload.encode("utf-8"))
             except KeyboardInterrupt:
                 server.close()
                 exit(0)
                 break
+
+    def choose_chatroom(self):
+        chatrooms = fetch_chatrooms()
+        chosen_chatroom = QuestionPrompter(
+            list(map(lambda question: question['name'], chatrooms))
+        ).prompt("Which chatroom would you like to join?")
+
+        for chatroom in chatrooms:
+            if chatroom['name'] == chosen_chatroom:
+                self.__connect(chatroom['port'])
 
     def get_user_name(self):
         return self.user_name
@@ -69,15 +77,7 @@ class Client:
 if __name__ == '__main__':
     user_name = input("Whats your username? \n> ")
     client = Client(user_name)
-
-    chatrooms = fetch_chatrooms()
-    chosen_chatroom = QuestionPrompter(
-        list(map(lambda question: question['name'], chatrooms))
-    ).prompt("Which chatroom would you like to join?")
-
-    for chatroom in chatrooms:
-        if chatroom['name'] == chosen_chatroom:
-            client.connect(chatroom['port'])
+    client.choose_chatroom()
 
     while True:
         try:
