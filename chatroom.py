@@ -1,5 +1,5 @@
 import socket
-import utils
+from art import Art
 from threading import Thread
 from user import User
 from command import Command
@@ -57,7 +57,9 @@ class Chatroom:
         user_name = client_socket.recv(BUFFER).decode("utf-8")
         user = User(user_name, client_socket, address)
 
-        user.get_client_socket().send(f'Welcome to the server, {user.get_name()}\nYou can leave the server by using the !quit command'.encode("utf-8"))
+        user.get_client_socket().send(
+            f'Welcome to the server, {user.get_name()}\nYou can leave the server by using the !quit command'.encode(
+                "utf-8"))
         for command in self.get_commands():
             if command.name == "commands":
                 user.get_client_socket().send(bytes(command.invoke(), 'utf-8'))
@@ -107,12 +109,12 @@ class Chatroom:
     def format_users(self):
         user_names = map(lambda user: f'{user.get_address()} - {user.name} \n', self.get_users())
 
-        return utils.ascii_title("List of users") + ''.join(user_names)
+        return Art("List of users").title() + ''.join(user_names)
 
     def format_commands(self):
         commands = map(lambda command: f'!{command.name} \n', self.get_commands())
 
-        return utils.ascii_title("Available commands") + ''.join(commands)
+        return Art("Available commands").title() + ''.join(commands)
 
     def get_name(self):
         return self.name

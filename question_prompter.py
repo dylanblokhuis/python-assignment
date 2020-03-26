@@ -1,6 +1,7 @@
 from typing import List
 from colors import Colors
 
+
 class QuestionPrompter:
     questions: List[str] = []
 

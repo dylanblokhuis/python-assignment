@@ -26,4 +26,3 @@ class User:
 
     def set_messages(self, messages):
         self.messages = messages
-
