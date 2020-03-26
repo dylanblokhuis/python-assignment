@@ -9,6 +9,9 @@ class Storage:
         self.path = path
 
     def get_data(self):
+        if not os.path.exists(self.get_path()):
+            return None
+
         # check if file is not empty
         if os.path.getsize(self.get_path()) > 0:
             # get data from pickle
@@ -18,6 +21,10 @@ class Storage:
             return None
 
     def set_data(self, data):
+        # create the directory and file if it doesn't exist.
+        if not os.path.exists(self.get_path()):
+            os.makedirs(os.path.dirname(self.get_path()))
+
         with open(self.get_path(), 'wb') as output:
             pickle.dump(data, output, pickle.HIGHEST_PROTOCOL)
 
