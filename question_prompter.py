@@ -1,6 +1,12 @@
 from typing import List
 from colors import Colors
 
+"""
+naam: Dylan Blokhuis
+datum: 16 maart 2020
+leerlijn: Python
+"""
+
 
 class QuestionPrompter:
     questions: List[str] = []

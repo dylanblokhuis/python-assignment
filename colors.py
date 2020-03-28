@@ -1,3 +1,10 @@
+"""
+naam: Dylan Blokhuis
+datum: 16 maart 2020
+leerlijn: Python
+"""
+
+
 class Colors:
     HEADER = '\033[95m'
     BLUE = '\033[94m'

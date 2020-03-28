@@ -1,5 +1,11 @@
 from colors import Colors
 
+"""
+naam: Dylan Blokhuis
+datum: 27 maart 2020
+leerlijn: Python
+"""
+
 
 class Art:
     string: str

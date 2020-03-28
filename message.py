@@ -1,3 +1,10 @@
+"""
+naam: Dylan Blokhuis
+datum: 24 maart 2020
+leerlijn: Python
+"""
+
+
 class Message:
     message: str
 

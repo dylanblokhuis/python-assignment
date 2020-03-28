@@ -8,6 +8,12 @@ from storage import Storage
 
 chatrooms_pkl_path = 'storage/chatrooms.pkl'
 
+"""
+naam: Dylan Blokhuis
+datum: 23 februari 2020
+leerlijn: Python
+"""
+
 
 class Server:
     chatrooms: List[Chatroom] = []

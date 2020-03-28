@@ -6,6 +6,12 @@ from threading import Thread
 
 BUFFER = 4096
 
+"""
+naam: Dylan Blokhuis
+datum: 23 februari 2020
+leerlijn: Python
+"""
+
 
 def fetch_chatrooms():
     main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)

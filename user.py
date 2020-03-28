@@ -1,5 +1,11 @@
 import socket
 
+"""
+naam: Dylan Blokhuis
+datum: 7 maart 2020
+leerlijn: Python
+"""
+
 
 class User:
     name: str = ""
