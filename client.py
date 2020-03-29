@@ -62,7 +62,7 @@ class Client:
 
     def connect(self, port: int):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-        server.connect(('0.0.0.0', port))
+        server.connect(('127.0.0.1', port))
         server.send(self.get_user_name().encode("utf-8"))
 
         thread = Thread(target=self.__receive, args=[server])
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     user_name = input("Whats your username? \n> ")
     # main server to fetch chatrooms or other options
     main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    main_server.connect(('0.0.0.0', 1234))
+    main_server.connect(('127.0.0.1', 1234))
     client = Client(user_name)
 
     has_chosen_chatroom = choose_chatroom(main_server)

@@ -47,7 +47,7 @@ class Server:
         # main server for a client to fetch available chatrooms
         try:
             main_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            main_server.bind(('0.0.0.0', 1234))
+            main_server.bind(('127.0.0.1', 1234))
             main_server.listen()
             print("Starting main server on port 1234")
         except Exception as ex:

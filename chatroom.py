@@ -50,7 +50,7 @@ class Chatroom:
 
     def __new_socket(self):
         server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind(('0.0.0.0', 0))
+        server.bind(('127.0.0.1', 0))
         server.listen()
         self.set_port(server.getsockname()[1])
 
