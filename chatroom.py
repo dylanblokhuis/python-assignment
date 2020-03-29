@@ -30,7 +30,12 @@ class Chatroom:
         self.set_commands([])
 
         self.default_commands()
-        self.__new_socket()
+        thread = Thread(target=self.__new_socket)
+        thread.daemon = True
+        thread.start()
+        thread.join()
+
+        return self.get_port()
 
     def broadcast(self, message, _from):
         for user in self.get_users():
@@ -50,6 +55,11 @@ class Chatroom:
         self.set_port(server.getsockname()[1])
 
         print(f'Started chatroom server: \"{self.get_name()}\" on port {self.get_port()}')
+        thread = Thread(target=self.__receive, args={server})
+        thread.daemon = True
+        thread.start()
+
+    def __receive(self, server):
         while True:
             client_socket, address = server.accept()
             # create another thread for each client
@@ -63,9 +73,7 @@ class Chatroom:
         user_name = client_socket.recv(BUFFER).decode("utf-8")
         user = User(user_name, client_socket, address)
 
-        user.get_client_socket().send(
-            f'Welcome to the server, {user.get_name()}\nYou can leave the server by using the !quit command'.encode(
-                "utf-8"))
+        user.get_client_socket().send(f'Welcome to the server, {user.get_name()}\nYou can leave the server by using the !quit command'.encode("utf-8"))
         for command in self.get_commands():
             if command.name == "commands":
                 user.get_client_socket().send(bytes(command.invoke(), 'utf-8'))
